@@ -2,9 +2,9 @@
 
 ---
 
-#### 1. + operator
+#### 1. `+` operator
 
-When we use + operator with string and number javascript will automatically convert the number to string this is called - coercion - automatic type conversion.
+When we use `+` operator with string and number javascript will automatically convert the number to string this is called - coercion - automatic type conversion.
 
 ```javascript
 > '35' + 3
@@ -13,8 +13,8 @@ When we use + operator with string and number javascript will automatically conv
 > 35 + 3
 38
 ```
- #### 2. - operator 
-Interestingly if we use - operator with strings javascript automatically convert them to numbers. Somehow the opposite of + operator.
+ #### 2. `-` operator 
+Interestingly if we use `-` operator with strings javascript automatically convert them to numbers. Somehow the opposite of + operator.
 
 ```javascript
 > '4' - '3'
@@ -49,7 +49,7 @@ true
 > typeof []
 'object'
 ```
-Also be aware of that typeof null return null (legacy bug)
+Also be aware of that typeof null return object (legacy bug)
 ```javascript
 > typeof null
 'object'
@@ -89,7 +89,7 @@ undefined
 ```
 
 #### 10. Runtime in the browser
-It is contains:
+It contains:
 - javascript engine - program that executes javascript code contain call stack (where the code actually executed using execution context) and heap (unstructured memory pull contains all the objects)
 - web APIs - DOM, Fetch API, Timers, etc. Not the part of the language itself. JS get access to this APIs through the global window object
 - callback queue - contains all callback function that are ready to be executed, for example callback function from DOM event listener.
@@ -97,9 +97,9 @@ It is contains:
 #### 11. Execution Context
 Every function is executed in the call stack having execution context abstraction which contains:
 - variable environment
-    - var, let, const variables - all variables declared inside the function
+    - `var`, `let`, `const` variables - all variables declared inside the function
     - Functions
-    - argument objects - contains function arguments
+    - argument object - contains function arguments
 - chain scope - references to the variables that are located to the outside of the current function
 - this keyword
 
@@ -113,20 +113,23 @@ Call stack is actually execution contexts get stacked on top of each other to ke
 
 Every function has scope chain - every outer parent function and finally the global scope.  
 `let` and `const` variables are block scoped but `var` variables are not block scoped.
-We can override variables accessed in function and declared somewhere in scope chain outside of the function. That's differ from python for example where we have to use `global or nonlocal`  in order to override variable created outside of the function.
+We can override variables accessed in function and declared somewhere in scope chain outside of the function.  
+<sub><sup>
+That's differ from python for example where we have to use `global` or `nonlocal`  in order to override variable created outside of the function.
+</sub></sup>
 
 #### 13 Hoisting
 
 Makes some types of variables accessible/usable in the code before they are actually declared. "Variables lifted to the top of their scope". Because the code is parsed for variables and function statement before executing.
 
 - function statement can be declared after calling them.
-- `var` variable can used before declaring them but they will be undefined. This lead to a lot of bugs. Declaring variable with `var` should be avoided!
+- `var` variable can used before declaring them but they will be undefined. That leads to a lot of bugs. Declaring variable with `var` should be avoided!
 - `let` and `const` they are also use hoisting but also they go TDZ (Temporal Dead Zone) until declaration line of the variable is reached. If the variable is in TDZ error is raise different error from undeclared variable at all.
   
 `const` variables work thanks to the TDZ
 
 #### 14 This keyword
-Special variable that is created for every execution context (every function). Takes the value of (points to) the owner of the function in which the `this` keyword is used. It is **NOT** static. It depends on how the function is called, and its value is assigned when the function is actually called.  
+Special variable that is created for every execution context (every function). Takes the value of (points to) the owner of the function in which the `this` keyword is used. It is **NOT** static. It depends on how the function is called and its value is assigned when the function is actually called.  
 Here are 4 different ways in which function can be called:
 - as a method in that case `this` points to the object
 ```javascript
