@@ -270,7 +270,7 @@ Above can help to explain why objects are not equal in the following snippet.
 false
 ```
 
-#### 17 More for functions
+#### 17 More on functions
 
 Functions are first class citizen which means that they can be passed as arguments to a function and function can return function. They are also objects therefore they have methods:
 - call - the first argument replace this.
@@ -291,4 +291,84 @@ console.log(unboundGetX()); // The function gets invoked at the global scope
 const boundGetX = unboundGetX.bind(module);
 console.log(boundGetX());
 // expected output: 42
+```
+
+You can provide default values for function parameters during declaration but when you call the function you cannot provide argument names like in Python for example so you have to rely on the order of the parameters. But deconstructing feature can be used for that purpose.
+#### 18 Destructuring
+- destructing arrays
+```javascript
+> let [x, y, z] = ["1", "2", "3"];
+> x
+'1'
+> y
+'2'
+> z
+'3'
+
+> let [, , bar] = ["1", "2", "3"];
+> bar
+'3'
+
+> let [one, [, three]] = [1, [2, 3]]
+> three
+3
+
+> let [foo1] = [1, 2]
+> foo1
+1
+
+> let [bar1, bar2, bar3] = [1, 2]
+> bar1
+1
+> bar2
+2
+> bar3
+undefined
+
+// default values
+> let [kr = 1] = []
+> kr
+1
+
+> function example() {return [1, 2]}
+> let [q, v] = example()
+> q
+1
+> v
+2
+```
+- destructuring objects
+```javascript
+> let {a, b: new_name, c} = {a:1, b:2}
+> a
+1
+> new_name
+2
+> c
+undefined
+
+> let {foo, bar = 'default_value'} = {foo:1}
+> foo
+1
+> bar
+'default_value'
+
+// nested with array and objects
+> let [{items: [{item_id}]}] = [{order_id: 3, items: [{item_id: 34, quantity: 2}]}]
+> item_id
+34
+
+// resigning variables
+> let aa = 11;
+// parentheses are needed as the {aa} on the left-hand side is considered a block and not an object literal. Also Your ( ... ) expression needs to be preceded by a semicolon or it may be used to execute a function on the previous line.
+> ({aa} = {aa: 22});
+{ aa: 22 }
+
+// Unpacking properties from objects passed as a function parameter
+> function foo({name, id, active = true}) {
+...   return [id, name, active];
+... }
+
+> foo({id: 42, name: 'Joe'})
+[ 42, 'Joe', true ]
 ```
