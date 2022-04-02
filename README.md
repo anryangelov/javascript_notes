@@ -87,7 +87,15 @@ undefined
 > foo
 [ 'a', 'b', 'c', 'foo' ]
 ```
-
+Looping Arrays
+```javascript
+> for (const elem of [2, 4, 5]) console.log(elem)
+2
+4
+5
+```
+If you want to loop with index use entries property for example: `for const [i, el] of [2, 4, 5].entries() ....`
+ 
 #### 10. Runtime in the browser
 It contains:
 - javascript engine - program that executes javascript code contain call stack (where the code actually executed using execution context) and heap (unstructured memory pull contains all the objects)
@@ -372,3 +380,65 @@ undefined
 > foo({id: 42, name: 'Joe'})
 [ 42, 'Joe', true ]
 ```
+
+#### 19. Spread operator 
+```javascript
+> let foo = [1, 3, 4]
+> let bar = [0, ...foo, 8, 9]
+> bar
+[ 0, 1, 3, 4, 8, 9 ]
+
+// The Rest/Spread Properties for ECMAScript proposal (ES2018) added spread properties to object literals. It copies own enumerable properties from a provided object onto a new object.
+> let user = {id: 3, name: 'Joe'}
+> let profile = {...user, active: true}
+> profile
+{ id: 3, name: 'Joe', active: true }
+
+// Spread syntax (other than in the case of spread properties) can only be applied to iterable objects like Array, or with iterating functions such as map(), reduce(), and assign().
+let obj = {'key1': 'value1'};
+let array = [...obj]; // TypeError: obj is not iterable
+
+> function example(a, b, c) {return [a, b, c]}
+> let data = [1, 2, 3]
+> let result = example(...data)
+> result
+[ 1, 2, 3 ]
+```
+
+#### 20. Rest pattern and parameters
+
+```javascript
+> let [a, b, ...others] = [1, 4, 5, 7, 9, 10]
+> a
+1
+> b
+4
+> others
+[ 5, 7, 9, 10 ]
+```
+```javascript
+> let {a, b, ...others} = {a: 1, b: 3, c: 8, d: 9}
+> a
+1
+> b
+3
+> others
+{ c: 8, d: 9 }
+```
+
+```javascript
+> function example(a, b, ...rest) {return [a, b, rest]} 
+> example(1, 2, 3, 4, 5, 6)
+[ 1, 2, [ 3, 4, 5, 6 ] ]
+```
+Rest parameters are Array instances, meaning methods like sort, map, forEach or pop can be applied on it directly
+
+#### 20. Loop Objects
+
+```javascript
+> let foo = {a: 1 , b: 2}
+> for (const [key, value] of Object.entries(foo)) console.log(key, value)
+a 1
+b 2
+```
+For keys or values only use `Object.keys()` or `Object.values()`
