@@ -1,6 +1,26 @@
 # JavaScript Notes
 
 ---
+  - [1. `+` operator](#1--operator)
+  - [2. `-` operator](#2---operator)
+  - [3. falsy values](#3-falsy-values)
+  - [4. Number('foo') return NaN](#4-numberfoo-return-nan)
+  - [5. Comparison operators](#5-comparison-operators)
+  - [6. Array is not a separate type. It is made from Object type](#6-array-is-not-a-separate-type-it-is-made-from-object-type)
+  - [7. Conditional operator](#7-conditional-operator)
+  - [8. Defining function](#8-defining-function)
+  - [9. Array operation](#9-array-operation)
+  - [10. Runtime in the browser](#10-runtime-in-the-browser)
+  - [11. Execution Context](#11-execution-context)
+  - [12. Scope chain](#12-scope-chain)
+  - [13 Hoisting](#13-hoisting)
+  - [14 This keyword](#14-this-keyword)
+  - [15. Regular function vs Arrow function](#15-regular-function-vs-arrow-function)
+  - [17 More on functions](#17-more-on-functions)
+  - [18 Destructuring](#18-destructuring)
+  - [19. Spread operator](#19-spread-operator)
+  - [20. Rest pattern and parameters](#20-rest-pattern-and-parameters)
+  - [20. Loop Objects](#20-loop-objects)
 
 #### 1. `+` operator
 
