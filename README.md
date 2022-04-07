@@ -98,34 +98,34 @@ const foo = () => expr or {}
 #### 9. Looping
 
 - `for` `of` loop - looping iterables (String, Array, Map,  Set)
-  ```javascript
-  > for (const elem of [2, 4, 5]) console.log(elem) 
-  2
-  4
-  5
-  > for (let f of 'foo') console.log(f)
-  f
-  o
-  o
-  ```
-  If you want to loop with index use entries property for example: `for const [i, el] of [2, 4, 5].entries() ....`
+```javascript
+> for (const elem of [2, 4, 5]) console.log(elem) 
+2
+4
+5
+> for (let f of 'foo') console.log(f)
+f
+o
+o
+```
+If you want to loop with index use entries property for example: `for const [i, el] of [2, 4, 5].entries() ....`
 
 - `forEach` method - executes a provided function once for each array element. Exists for Array, Map, Set.
-  ```javascript
-  > [1, 3, 5].forEach((el, i, arr) => console.log(i, el))
-  0 1
-  1 3
-  2 5
-  ```
+```javascript
+> [1, 3, 5].forEach((el, i, arr) => console.log(i, el))
+0 1
+1 3
+2 5
+```
 
 - Looping objects
-  ```javascript
-  > let foo = {a: 1 , b: 2}
-  > for (const [key, value] of Object.entries(foo)) console.log(key, value)
-  a 1
-  b 2
-  ```
-  For keys or values only use `Object.keys()` or `Object.values()`
+```javascript
+> let foo = {a: 1 , b: 2}
+> for (const [key, value] of Object.entries(foo)) console.log(key, value)
+a 1
+b 2
+```
+For keys or values only use `Object.keys()` or `Object.values()`
 
 
 #### 10. Array operations
