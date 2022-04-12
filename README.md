@@ -532,31 +532,186 @@ Rest parameters are Array instances, meaning methods like sort, map, forEach or 
 
 #### 22. Basic DOM manipulation
 
-DOM is a structured representation of the HTML code, created by browser immediately the HTML content is loaded. This is a connection point between the javascript and the HTML. DOM methods and properties are not part of JS language but it is provided by the browser through out the browser WEB APIs.  
-A special object document is entry point to the DOM tree. The Document method querySelector() returns the first Element within the document that matches the specified selector, or group of selectors. If no matches are found, null is returned.
-```javascript
-// accessing first element containing class message
-const message_el = document.querySelector('.message');
-// update the text of the element
-message.textContent = "new message ..."
+DOM is a structured representation of the HTML code, created by browser immediately the HTML content is loaded. This is a connection point between the javascript and the HTML. It is an interface that allows a programming language to manipulate the content, structure, and style of a website. JavaScript is the client-side scripting language that connects to the DOM in an internet browser. Therefore DOM methods and properties are not part of JS language but it is provided by the browser through out the browser WEB APIs.   
+DOM tree is build by Nodes in hierarchical style using inheritance which are represented by javascript objects. Nodes can be different types:
+- Document
+- Comment - everything in the HTML is in the DOM event the comments.
+- Text - for every text in the HTML there is separate node of the type text. For example for `<p>some text</p>` will be created Text Node Object representing `some_text` and separate HTMLElement Node Object representing `<p>some text<\p>`
+- Element:
+    - HTMLElement
+      - HTMLDivElement
+      - HTMLButtonElement
+      - ...
+      - ...  
+      All HTMLElements inherit common methods and attributes for example `querySelector`. But also every specific HTMLElement has some unique attributes for example `anchor` element has `link` attribute which no other element has. That's why there is different types of HTMLElements.      
 
-// listening for event, click in this case, and also we provide function (callback) which will be executed when the event happened.
+There is special Node type called  `EventTarget` from which inherit Node and Window (lots, of methods and properties, many unrelated to DOM) type. Trough out the `EventTarget` every Element inherit `addEventListener` element.
+
+- Selecting, Creating and Deleting elements - A special object document is entry point to the DOM tree. The Document method querySelector() returns the first Element within the document that matches the specified selector, or group of selectors. If no matches are found, null is returned.
+```javascript
+// getting first element containing class message
+const messageEl = document.querySelector('.message');
+
+// getting all elements containing class .foo
+const fooEls = document.querySelectorAll('.foo')
+
+// accessing element by id
+document.getElementById('current--0');
+
+// getting all elements with tagName button
+// or getting all the buttons
+const buttonEls = document.getElementsByTagName('button')
+// this method return HTMLCollection which is live collection - if DOM changes this collection is updated immediately. querySelector returns NodeList which is not live updated.
+
+// created DOM element
+const newEl = document.createElement('div')
+// added classes to this element
+newEl.classList.add('cookie-message');
+// update the text of the element
+newEl.textContent = "new message ..."
+// inserting HTML as string
+newEl.innerHTML = "foo. <p>bar</>"
+
+// Add this new element to the DOM
+// Place as the first child of the messageEl
+messageEl.prepend(newEl)
+// we can added as the last child
+messageEl.append(newEl)
+// be aware that newEl is added only once since it is the same element and cannot exists on multiple places in the DOM.
+// Dom element is unique.
+// So it is put as first child and after that move as a last child.
+// But if we want we can put clone of the newEl
+messageEl.append(newEl.cloneNode(True))
+// Also we can use 
+messageEl.before(newEl)
+messageEl.after(newEl)
+// this way we put newEl as a sibling before or after messageEl
+
+// parses the specified text as HTML or XML and inserts the resulting nodes into the DOM tree at a specified position
+container_el.insertAdjacentHTML('afterbegin', '<div class="foo"</div>')
+```
+
+- Styles, Attributes and Classes
+
+```javascript
+// Styles
+
+someEl.style.backgroundColor = '#234567'
+someEl.style.width = '120%'
+// this styles are set directly as inline styles with style attribute directly in the DOM.
+// os if you want to see the hight of the element and is not as inline style will not work even it is in style sheet - CSS file. We can access hight through GetComputedStyle
+getComputedStyle(someEl).hight
+// This is computed real style.
+// We can do this
+someEl.style.height = Number.parseFloat(getComputedStyle(message).height, 10) + 30 + 'px'
+
+// if we define CSS property (variable) in (:root) we can change the value in that way
+document.documentElement.style.setProperty('--color-primary', 'green')
+
+// Attributes
+
+// standard attributes can be access and set as properties
+imgEl.alt
+imgEl.src
+imgEl.alt = 'bar'
+// anther way is using getAttributes and setAttributes which works for non standard attributes
+imgEl.getAttribute('src')
+
+// there is a special attributes which starts with `data`
+// for example attribute name data-version-number can be get this way.
+imgEl.dataset.versionNumber
+// this attributes are stored in dataset. note Camel case.
+
+// Classes
+
+// adding or removing classes for chosen element
+messageEl.classList.add("new_class")
+// checking if class exists for a given element
+messageEL.classList.contains("some_class")
+messageEl.classList.remove("some_class")
+// toggle - if exists remove and vice versa
+messageEl.classList.toggle("some_class")
+```
+
+- Events
+
+```javascript
+// listening for event, click in this case, and also we provide function (callback) which will be executed when the event happened. This callback accept argument - the event. Also be aware `this` keyword in the callback is the element to which event event handler is attached.
 document.querySelector('.check').addEventListener(
-  "click", function () {
+  "click", function (event) {
     // getting value of user input.
     console.log(document.querySelect(.guess).value)
   }
 )
 
-// adding or removing classes for chosen element
-document.querySelector(".foo").classList.add("new_class")
-// checking if class exists for a given element
-document.querySelector(".foo").classList.add("some_class")
+// there are a lot of different events
+// like mouse events `click`, `mouseenter`, `mouseleave` and etc, also keyboards events like keydown, keypress and keyup and many more types of events.
 
-// accessing element by id
-document.getElementById('current--0');
+// we have also removeEventListener
+```
 
-// parses the specified text as HTML or XML and inserts the resulting nodes into the DOM tree at a specified position
-container_el.insertAdjacentHTML('afterbegin', '<div class="foo"</div>')
+Event propagation - if we have `<body><div>...</    div><p><b>Foo</b></p></body>` and we click on the text `Foo` on the page this will generate click event which will propagate from the oldest parent element `body` throughout `p`, `b` to the target `Foo` but not throughout `div` since it is not in the same "branch". The event will bubble back from `Foo` to `body` throughout `b` and `p`. By default the bubble face is "visible". All this means that **if we attach click event handler to the `p` element the event will be trigger not only when clicking on the `p` but also clicking on `b` or `Foo` - everywhere within the `p`**. And if we add click event handler to `b` and `Foo` element the event (the exact same event)will be handled in following order by handlers attached to `Foo` , `b`, `p`, this is because of bubble face is default not capture face.  
+event argument in the callback function has `target` attribute which is the element where the click event happened. For example if we attache handler to `p` element but event happened in `b` element e.target will be `b` element, but `currentTarget` will be `p`. So `event.currentTarget === this` in any event handler.
+We can stop propagation with `event.stopPropagation`. It is not good idea to be used. In another words **event handler functions are listening for events that happen on element itself or events that keep bubbling up from their child elements.**
 
+- Traversing DOM  
+```javascript
+let el = document.createElement("div");
+
+el.childNodes // return all type of Nodes in NodeList
+el.children // return only Nodes of type Element in live HTMLCollection.
+```
+
+`.children` is a property of an Element. 1 Only Elements have `.children`, and these children are all of type Element.
+However, `.childNodes` is a property of Node. `.childNodes` can contain any node. Works only for direct children.
+
+```javascript
+el.firstElementChild
+el.lastElementChild
+el.parentNode
+el.parentElement
+
+el.closest() // accept css selector just like `querySelector` and find the closet parent element.
+
+el.previousSibling
+el.nextSibling
+el.previousElementSibling
+el.nextElementSibling
+
+el.parentElement.children // find all sibling elements
+```
+
+- Intersection Observer API
+```javascript
+
+const obsCallback = functions(entries, observer) { // entries - array of IntersectionObserverEntry
+
+}
+
+const obsOptions = {
+  root: null, // the root will be the element with whom our targetEl wants to intersect or if is null the intersect our targetEl with the viewport.
+  threshold: 0.1 // this the percentage of the intersection. Could be array
+}
+
+const observer = new IntersectionObserver(obsCallback, obsOptions);
+observer.observe(targetEl)
+
+// when scrolling and our targetEl intersect with viewport with more the 0.1 or 10% the obsCallback function will be executed and also when the intersection became less then 0.1 again the obsOption will be executed but IntersectionObserverEntry will have property isIntersecting: false whereas in the first case will be true.
+```
+
+#### Script Loading - Defer and Async
+This is HTML 5 features.
+
+if we use regular `<script src="script.js">` this happen
+
+```mermaid
+gantt
+    title A Gantt Diagram
+    dateFormat  YYYY-MM-DD
+    section Section
+    A task           :a1, 2014-01-01, 30d
+    Another task     :after a1  , 20d
+    section Another
+    Task in sec      :2014-01-12  , 12d
+    another task      : 24d
 ```
