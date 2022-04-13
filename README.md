@@ -698,20 +698,3 @@ observer.observe(targetEl)
 
 // when scrolling and our targetEl intersect with viewport with more the 0.1 or 10% the obsCallback function will be executed and also when the intersection became less then 0.1 again the obsOption will be executed but IntersectionObserverEntry will have property isIntersecting: false whereas in the first case will be true.
 ```
-
-#### Script Loading - Defer and Async
-This is HTML 5 features.
-
-if we use regular `<script src="script.js">` this happen
-
-```mermaid
-gantt
-    title A Gantt Diagram
-    dateFormat  YYYY-MM-DD
-    section Section
-    A task           :a1, 2014-01-01, 30d
-    Another task     :after a1  , 20d
-    section Another
-    Task in sec      :2014-01-12  , 12d
-    another task      : 24d
-```
