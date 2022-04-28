@@ -23,6 +23,11 @@
   - [20. Spread operator](#20-spread-operator)
   - [21. Rest pattern and parameters](#21-rest-pattern-and-parameters)
   - [22. Basic DOM manipulation](#22-basic-dom-manipulation)
+  - [23. Prototyping](#23-prototyping)
+  - [24. Construction Function](#24-construction-function)
+  - [25. Prototype Chain](#25-prototype-chain)
+  - [26. Static Methods](#26-static-methods)
+  - [27. Class Basic Syntax](#27-class-basic-syntax)
 
 #### 1. `+` operator
 
@@ -640,12 +645,7 @@ messageEl.classList.toggle("some_class")
 document.querySelector('.check').addEventListener(
   "click", function (event) {
     // getting value of user input.
-    console.log(document.querySelect(.guess).value)
-  }
-)
-
-// there are a lot of different events
-// like mouse events `click`, `mouseenter`, `mouseleave` and etc, also keyboards events like keydown, keypress and keyup and many more types of events.
+    console.log(document.query#### 24. Construction Function`mouseenter`, `mouseleave` and etc, also keyboards events like keydown, keypress and keyup and many more types of events.
 
 // we have also removeEventListener
 ```
@@ -697,4 +697,91 @@ const observer = new IntersectionObserver(obsCallback, obsOptions);
 observer.observe(targetEl)
 
 // when scrolling and our targetEl intersect with viewport with more the 0.1 or 10% the obsCallback function will be executed and also when the intersection became less then 0.1 again the obsOption will be executed but IntersectionObserverEntry will have property isIntersecting: false whereas in the first case will be true.
+```
+
+#### 23. Prototyping
+
+Prototype-based programming is a style of object-oriented programming in which behaviour reuse (known as inheritance) is performed via a process of reusing existing objects that serve as prototypes.  
+You make prototype objects, and then … make new instances. Objects are mutable in JavaScript, so we can augment the new instances, giving them new fields and methods. These can then act as prototypes for even newer objects. We don't need classes to make lots of similar objects… Objects inherit from objects. What could be more object oriented than that?  
+One of the key difference from classical OOP is that different types of Objects can be created from another objects not from classes `Object.create(PatentObject)`. But in JS this prototype nature is messed up with function constructions and classes - syntactic sugar for function constructions.  
+
+So there are tree ways in JS to create prototypal inheritance
+ - Construction Function
+ - ES6 Classes
+ - Object.create()
+  
+#### 24. Construction Function
+
+Every function can be construction function but should be called with `new` operator - `dog = new Dog()`. Four things are happened:
+- A new empty object `{}` is created.
+- function is called where `this` = `{}`.
+- `{}.__proto__` is linked to `Function.prototype` object
+- `{}` is automatically returned
+
+#### 25. Prototype Chain
+
+Every object has prototype object which reference is stored in special attribute `__proto__`. So `foo.__proto__` is the prototype of the `foo` object. `foo.__proto__.__proto__` is the prototype of the `foo.__proto__`. `Object` is the end of the chain and `Object.__proto__ = null`.  
+So attribute is searched through the chain until it is find.  
+Here is an example how to create prototype chain and Object.create():
+```javascript
+function Employee() {
+    this.name = '';
+    this.dept = 'general';
+}
+
+function Manager() {
+  Employee.call(this);  // overwrite this
+  this.reports = [];
+}
+
+// The actual creation of the chain
+// We know that Manager.prototype is the prototype of the created objects with Manager but the Manager.prototype has prototype Object instead Employee.prototype.
+Manager.prototype = Object.create(Employee.prototype);
+Manager.prototype.constructor = Manager;
+
+function WorkerBee() {
+  Employee.call(this);
+  this.projects = [];
+}
+WorkerBee.prototype = Object.create(Employee.prototype);
+WorkerBee.prototype.constructor = WorkerBee;
+```
+
+#### 26. Static Methods
+
+If we have `Foo` function. adding method `bar` like that `Foo.bar = function () {}` and if we create `obj = new Foo()` and after that calling `obj.bar()` will not work since `bar` is not define in `Foo.prototype` but directly to constructed function - `Foo`.
+So we can call `Foo.bar()` and `this` will be the `Foo`.
+
+
+#### 27. Class basic Syntax
+
+```javascript
+
+// automatically sets prototype
+class Student extend Person {
+  constructor (fullName, course) {
+    // super must call before accessing this;
+    super(fullName):
+    this.course = course;
+    this.studyHours = 0;
+}
+
+  get courseScore () {
+    return this._courseScore;
+  }
+
+  set courseScore (score) {
+    if (score > 0) {
+      this._courseScore = score
+    }
+  }
+
+  study(h) {
+    this.studyHours += h
+  }
+} 
+
+John = new Student('John', 'Math')
+John.courseScore = 30; // setter
+John.study(2)
 ```
